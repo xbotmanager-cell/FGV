@@ -98,7 +98,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const SESSION_DIR = './session';
-const BOT_NAME = process.env.BOT_NAME || 'BUNNY TECH';
+const BOT_NAME = process.env.BOT_NAME || 'LUPIN-MD';
 const VERSION = '1.0.0';
 const DEFAULT_PREFIX = process.env.PREFIX || '.';
 const OWNER_FILE = './owner.json';
@@ -118,7 +118,7 @@ const AUTO_JOIN_DELAY = 5000;
 const SEND_WELCOME_MESSAGE = true;
 const GROUP_LINK = 'https://chat.whatsapp.com/Iy8vxlb2F1iJjeQaXjMLXN';
 const GROUP_INVITE_CODE = GROUP_LINK.split('/').pop();
-const GROUP_NAME = 'BUNNY TECH Community';
+const GROUP_NAME = BOT_NAME + ' Community';
 const AUTO_JOIN_LOG_FILE = './auto_join_log.json';
 
 function silenceBaileysCompletely() {
@@ -804,7 +804,7 @@ async function loadCommandsFromFolder(folderPath, category = 'general') {
     } catch {}
 }
 
-function parseBunnyTechSession(sessionString) {
+function parseBotSession(sessionString) {
     try {
         let cleaned = sessionString.trim().replace(/^["']|["']$/g, '');
         if ((cleaned.startsWith('WOLF-BOT:') || cleaned.startsWith('SWIFTBOT~'))) {
@@ -818,7 +818,7 @@ function parseBunnyTechSession(sessionString) {
 
 async function authenticateWithSessionId(sessionId) {
     try {
-        const sessionData = parseBunnyTechSession(sessionId);
+        const sessionData = parseBotSession(sessionId);
         if (!sessionData) throw new Error('Could not parse session data');
         if (!fs.existsSync(SESSION_DIR)) fs.mkdirSync(SESSION_DIR, { recursive: true });
         fs.writeFileSync(path.join(SESSION_DIR, 'creds.json'), JSON.stringify(sessionData, null, 2));
@@ -887,7 +887,7 @@ async function startBot(loginMode = 'pair', loginData = null) {
         }
         await modesEngine.init();
         commands.clear(); commandCategories.clear();
-        const commandLoadPromise = loadCommandsFromFolder('./commands');
+        const commandLoadPromise = loadCommandsFromFolder('./plugins');
         store = new MessageStore();
         ensureSessionDir();
         statusDetector = new StatusDetector();
@@ -951,6 +951,8 @@ async function startBot(loginMode = 'pair', loginData = null) {
                 }
             }
             if (connection === 'close') {
+                const statusCode = lastDisconnect?.error?.output?.statusCode;
+                UltraCleanLogger.error(`❌ Connection closed. Reason: ${lastDisconnect?.error?.message || 'Unknown'} (Status: ${statusCode})`);
                 isConnected = false; stopHeartbeat();
                 
                 // Unregister session in Firestore
@@ -1057,7 +1059,15 @@ async function handleSuccessfulConnection(sock, loginMode, loginData) {
                 : rawId;
 
             // Generate Dashboard Credentials
-            const generatedPassword = Math.random().toString(36).slice(-8); // 8-char random password
+            const generateComplexPassword = () => {
+                const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const numbers = '0123456789';
+                let p = '';
+                for(let i=0; i<4; i++) p += letters[Math.floor(Math.random()*letters.length)];
+                for(let i=0; i<4; i++) p += numbers[Math.floor(Math.random()*numbers.length)];
+                return p.split('').sort(() => 0.5 - Math.random()).join('');
+            };
+            const generatedPassword = generateComplexPassword();
             
             // Store credentials securely in Firestore
             try {
@@ -1081,9 +1091,9 @@ async function handleSuccessfulConnection(sock, loginMode, loginData) {
                       `├⊷ *Member Detection:* ✅ Active\n` +
                       `└⊷ *Auth:* ${loginMode === 'session' ? 'Session ID' : 'Pairing Code'}\n\n` +
                       `🔐 *WEB DASHBOARD ACCESS*\n` +
-                      `URL: (Use provided URL)\n` +
-                      `Phone: ${ownerInfo.ownerNumber}\n` +
-                      `Password: ${generatedPassword}\n\n` +
+                      `├⊷ *URL:* ${process.env.RENDER_EXTERNAL_URL || process.env.APP_URL || process.env.WEB_URL || process.env.HOST || "http://localhost:3000"}\n` +
+                      `├⊷ *Phone:* ${ownerInfo.ownerNumber}\n` +
+                      `└⊷ *Password:* ${generatedPassword}\n\n` +
                       `╰⊷ *${BOT_NAME} ONLINE 🪂*`
             });
 
@@ -1099,7 +1109,14 @@ async function handleConnectionCloseSilently(lastDisconnect, loginMode, phoneNum
     const statusCode = lastDisconnect?.error?.output?.statusCode;
     connectionAttempts++;
     if (statusCode === 409) { setTimeout(async () => { await startBot(loginMode, phoneNumber); }, 25000); return; }
-    if (statusCode === 401 || statusCode === 403 || statusCode === 419) cleanSession();
+    if (statusCode === 401 || statusCode === 403 || statusCode === 419) {
+        UltraCleanLogger.error('❌ Session invalid or expired. Cleaning session...');
+        cleanSession();
+        if (loginMode === 'session') {
+            UltraCleanLogger.error('❌ The provided SESSION_ID is invalid. Exiting to prevent infinite loop.');
+            process.exit(1);
+        }
+    }
     const delayTime = Math.min(4000 * Math.pow(2, connectionAttempts - 1), 50000);
     setTimeout(async () => { if (connectionAttempts >= MAX_RETRY_ATTEMPTS) { connectionAttempts = 0; process.exit(1); } else { await startBot(loginMode, phoneNumber); } }, delayTime);
 }
@@ -1274,7 +1291,7 @@ async function handleIncomingMessage(sock, msg) {
         }
 
         
-        const dynamicCommand = commandManager.findCommand(textMsg, senderJid);
+        const dynamicCommand = commandManager.findCommand(textMsg, currentPrefix);
         
         if (!dynamicCommand) return;
         
@@ -1450,7 +1467,7 @@ try {
         const isDbConnected = db ? 'Connected' : 'Disconnected';
         
         res.json({
-            botName: typeof BOT_NAME !== 'undefined' ? BOT_NAME : 'BUNNY TECH',
+            botName: typeof BOT_NAME !== 'undefined' ? BOT_NAME : BOT_NAME,
             version: typeof VERSION !== 'undefined' ? VERSION : '1.1.3',
             prefix: typeof isPrefixless !== 'undefined' ? (isPrefixless ? 'none' : (typeof getCurrentPrefix !== 'undefined' ? getCurrentPrefix() : 'none')) : 'none',
             commandsCount: typeof commandManager !== 'undefined' ? commandManager.commands.size : 0,
@@ -1464,12 +1481,14 @@ try {
         });
     });
     
-    app.get(/.*/, (req, res) => {
+        app.use((req, res) => {
         if (!req.path.startsWith('/api')) {
-            res.sendFile(process.cwd() + '/web-app/dist/index.html');
+            res.sendFile(path.resolve('web-app/dist/index.html'));
+        } else {
+            res.status(404).json({ error: "Not Found" });
         }
     });
-    
+
     app.listen(3000, "0.0.0.0", () => {
         console.log(`[INFO] 🌐 Web dashboard listening on port ${port}`);
         if (typeof UltraCleanLogger !== 'undefined') UltraCleanLogger.info(`🌐 Web dashboard running on port ${port}`);
