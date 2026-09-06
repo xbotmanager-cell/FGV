@@ -33,7 +33,8 @@ export async function loadPlugins() {
                         if (typeof module.default === 'function') {
                             module.default();
                         } else if (typeof module.default === 'object') {
-                            commandManager.registerBaseCommand(module.default);
+                            await new Promise(r => setTimeout(r, 200));
+                            await commandManager.registerBaseCommand(module.default);
                         }
                     }
                 } catch (e) {

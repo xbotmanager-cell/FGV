@@ -1,13 +1,13 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, addDoc, onSnapshot, query, where, orderBy, limit } from 'firebase/firestore';
+import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, addDoc, onSnapshot, query, where, orderBy, limit, writeBatch } from 'firebase/firestore';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const configPath = path.resolve(process.cwd(), 'firebase-applet-config.json');
+
 let firestoreDatabaseId = '(default)';
 let config = {};
 if (fs.existsSync(configPath)) {
@@ -39,37 +39,21 @@ class QueryProxy {
         this.collectionPath = collectionPath;
         this.constraints = constraints;
     }
-    where(field, op, val) {
-        return new QueryProxy(this.collectionPath, [...this.constraints, where(field, op, val)]);
-    }
-    orderBy(field, dir) {
-        return new QueryProxy(this.collectionPath, [...this.constraints, orderBy(field, dir)]);
-    }
-    limit(n) {
-        return new QueryProxy(this.collectionPath, [...this.constraints, limit(n)]);
-    }
+    where(field, op, val) { return new QueryProxy(this.collectionPath, [...this.constraints, where(field, op, val)]); }
+    orderBy(field, dir) { return new QueryProxy(this.collectionPath, [...this.constraints, orderBy(field, dir)]); }
+    limit(n) { return new QueryProxy(this.collectionPath, [...this.constraints, limit(n)]); }
     async get() {
         const q = query(collection(realDb, this.collectionPath), ...this.constraints);
         const snapshot = await getDocs(q);
-        return {
-            empty: snapshot.empty,
-            size: snapshot.size,
-            docs: snapshot.docs.map(d => ({ id: d.id, exists: d.exists(), data: () => d.data() }))
-        };
+        return { empty: snapshot.empty, size: snapshot.size, docs: snapshot.docs.map(d => ({ id: d.id, exists: d.exists(), data: () => d.data() })) };
     }
     onSnapshot(callback) {
         const q = query(collection(realDb, this.collectionPath), ...this.constraints);
         return onSnapshot(q, (snapshot) => {
-            callback({
-                empty: snapshot.empty,
-                size: snapshot.size,
-                docs: snapshot.docs.map(d => ({ id: d.id, exists: d.exists(), data: () => d.data() }))
-            });
+            callback({ empty: snapshot.empty, size: snapshot.size, docs: snapshot.docs.map(d => ({ id: d.id, exists: d.exists(), data: () => d.data() })) });
         });
     }
-    doc(id) {
-        return new DocProxy(`${this.collectionPath}/${id}`);
-    }
+    doc(id) { return new DocProxy(`${this.collectionPath}/${id}`); }
     async add(data) {
         const ref = await addDoc(collection(realDb, this.collectionPath), data);
         return { id: ref.id };
@@ -77,7 +61,8 @@ class QueryProxy {
 }
 
 const db = {
-    collection: (name) => new QueryProxy(name)
+    collection: (name) => new QueryProxy(name),
+    batch: () => writeBatch(realDb)
 };
 
 export { db };

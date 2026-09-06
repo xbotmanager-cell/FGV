@@ -1,52 +1,55 @@
 import fs from 'fs';
 import path from 'path';
 
-const dirs = ['settings', 'general', 'admin', 'developer'];
+const dirs = ['settings', 'general', 'admin', 'developer', 'media'];
 dirs.forEach(d => {
     const p = path.join('plugins', d);
     if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });
 });
 
-fs.writeFileSync('plugins/general/ping.js', `
-export default {
-    name: 'ping',
-    description: 'Check bot response speed',
-    category: 'general',
-    ownerOnly: false,
-    execute: async (sock, msg, args) => {
+const generateCommandFile = (category, cmd, aliases, desc, perm) => {
+    const content = `export default {
+    name: '${cmd}',
+    aliases: ${JSON.stringify(aliases)},
+    category: '${category}',
+    description: '${desc}',
+    usage: '.${cmd}',
+    permission: '${perm}', // Public, Owner, Sudo, Admin
+    reaction: '⚡',
+    responses: {
+        LUPIN_MD: "LUPIN ⚡: Target executed.",
+        SWIFTBOT: "SWIFTBOT 🏎️: Done.",
+        BULL_MD: "BULL 🐂: Authorized. Command complete.",
+        JOKER: "JOKER 🃏: Hahaha! Okay, done!",
+        DODGE_MD: "DODGE 🏎️: Zoom! Done.",
+        KOE: "KŌE 🌸: Okay, I have done it for you.",
+        BUNNY_MD: "BUNNY 🐰: Done and done! Hop hop!",
+        LUCIFER: "LUCIFER 🦇: It is done.",
+        ANGELS: "ANGELS 👼: Happy to help! All done.",
+        ASTRA_X: "ASTRA 💫: Operation successful."
+    },
+    help: {
+        overview: '${desc}',
+        usage: '.${cmd}',
+        features: ['Executes the command safely.']
+    },
+    media: { type: 'text', url: '', caption: '' },
+    execute: async (sock, msg, args, currentPrefix, options) => {
+        // Base logic to be injected or used via config
         const chatId = msg.key.remoteJid;
-        const start = Date.now();
-        await sock.sendMessage(chatId, { text: 'Pinging...' }).then(async () => {
-            const end = Date.now();
-            await sock.sendMessage(chatId, { text: \`Pong! Speed: \${end - start}ms\` });
-        });
+        try {
+            await sock.sendMessage(chatId, { text: options.response || "Command executed." });
+        } catch (e) { }
     }
 };
-`);
-
-fs.writeFileSync('plugins/general/help.js', `
-export default {
-    name: 'help',
-    description: 'Show details about commands',
-    category: 'general',
-    ownerOnly: false,
-    execute: async (sock, msg, args) => {
-        const chatId = msg.key.remoteJid;
-        await sock.sendMessage(chatId, { text: "Use the web dashboard to see all commands." });
-    }
+`;
+    fs.writeFileSync(path.join('plugins', category, `${cmd}.js`), content);
 };
-`);
 
-fs.writeFileSync('plugins/admin/block.js', `
-export default {
-    name: 'block',
-    description: 'Block a user',
-    category: 'admin',
-    ownerOnly: true,
-    execute: async (sock, msg, args) => {
-        const chatId = msg.key.remoteJid;
-        await sock.sendMessage(chatId, { text: "User blocked." });
-    }
-};
-`);
+const settingsCmds = ['settings', 'setprefix', 'setsuffix', 'setname', 'setimage', 'personality', 'language', 'modes', 'boxmode', 'maintenance', 'addsudo', 'delsudo', 'blockcmd', 'unblockcmd'];
+settingsCmds.forEach(c => generateCommandFile('settings', c, [], 'Manage bot settings.', 'Owner'));
 
+const generalCmds = ['menu', 'help', 'ping', 'botinfo', 'owner', 'profile', 'uptime', 'version', 'time', 'report'];
+generalCmds.forEach(c => generateCommandFile('general', c, [], 'General bot command.', 'Public'));
+
+console.log("Plugins generated.");
