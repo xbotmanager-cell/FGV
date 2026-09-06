@@ -16,16 +16,16 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Block a specific command",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Block a specific command",
-        "BULL_MD": "BULL 🐂: Block a specific command",
-        "JOKER": "JOKER 🃏: Block a specific command",
-        "DODGE_MD": "DODGE 🏎️: Block a specific command",
-        "KOE": "KŌE 🌸: Block a specific command",
-        "BUNNY_MD": "BUNNY 🐰: Block a specific command",
-        "LUCIFER": "LUCIFER 🦇: Block a specific command",
-        "ANGELS": "ANGELS 👼: Block a specific command",
-        "ASTRA_X": "ASTRA 💫: Block a specific command"
+        "LUPIN_MD": "🕵️ That tool has been confiscated. Command locked.",
+        "SWIFTBOT": "⚡ Execution denied. Command block absolute.",
+        "BULL_MD": "🐂 The path is sealed. Command blocked by force.",
+        "JOKER": "😂 Oops! Someone took that toy away! Command blocked.",
+        "DODGE_MD": "🏎️ Throwing a wrench in the gears. Command locked.",
+        "KOE": "🌸 I will no longer speak that word... it is blocked.",
+        "BUNNY_MD": "🐰 Putting that carrot away! Command disabled.",
+        "LUCIFER": "🌑 The dark seal has been placed. Command forbidden.",
+        "ANGELS": "👼 That action has been peacefully restricted.",
+        "ASTRA_X": "✨ Elegant restriction applied. Command is now disabled."
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;
@@ -35,7 +35,7 @@ export default {
     const target = commandManager.findCommand(args[0], currentPrefix);
     if (!target) { await sock.sendMessage(chatId, { text: "❌ Command not found." }); return; }
     await db.collection('commands').doc(target.config.id).update({ status: 'blocked' });
-    await sock.sendMessage(chatId, { text: `✅ Command '${args[0]}' is now blocked.` });
+    await sock.sendMessage(chatId, { text: (options.response ? options.response + "\n\n" : "") + `✅ Command '${args[0]}' is now blocked.` });
 
         } catch (e) {
             console.error(`[${"blockcmd"}] Error:`, e.message);

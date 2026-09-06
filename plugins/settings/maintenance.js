@@ -16,16 +16,16 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Toggle maintenance mode",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Toggle maintenance mode",
-        "BULL_MD": "BULL 🐂: Toggle maintenance mode",
-        "JOKER": "JOKER 🃏: Toggle maintenance mode",
-        "DODGE_MD": "DODGE 🏎️: Toggle maintenance mode",
-        "KOE": "KŌE 🌸: Toggle maintenance mode",
-        "BUNNY_MD": "BUNNY 🐰: Toggle maintenance mode",
-        "LUCIFER": "LUCIFER 🦇: Toggle maintenance mode",
-        "ANGELS": "ANGELS 👼: Toggle maintenance mode",
-        "ASTRA_X": "ASTRA 💫: Toggle maintenance mode"
+        "LUPIN_MD": "🕵️ We are going dark. Maintenance protocols initiated.",
+        "SWIFTBOT": "⚡ System lockdown. Maintenance mode absolute.",
+        "BULL_MD": "🐂 The gates are closed. Maintenance enforced.",
+        "JOKER": "😂 Taking a coffee break! The bot is under construction.",
+        "DODGE_MD": "🏎️ Entering the pit stop. Maintenance engaged.",
+        "KOE": "🌸 I need some time to heal and rest. Maintenance active.",
+        "BUNNY_MD": "🐰 Time for a quick nap and some fixes! Maintenance mode on!",
+        "LUCIFER": "🌑 The abyss closes. Maintenance has begun.",
+        "ANGELS": "👼 The system is resting peacefully for divine upgrades.",
+        "ASTRA_X": "✨ Elegant system rest initiated. Maintenance active."
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;
@@ -34,7 +34,7 @@ export default {
     if (!args[0]) { await sock.sendMessage(chatId, { text: "❌ Usage: .maintenance on or off" }); return; }
     const val = args[0] === 'on' ? 'MAINTENANCE' : 'ACTIVE';
     await db.collection('bot_config').doc('settings').set({ status: val }, { merge: true });
-    await sock.sendMessage(chatId, { text: `✅ Maintenance Mode is now ${val}` });
+    await sock.sendMessage(chatId, { text: (options.response ? options.response + "\n\n" : "") + `✅ Maintenance Mode is now ${val}` });
 
         } catch (e) {
             console.error(`[${"maintenance"}] Error:`, e.message);

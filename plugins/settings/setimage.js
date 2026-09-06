@@ -16,22 +16,22 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Changes the bot image",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Changes the bot image",
-        "BULL_MD": "BULL 🐂: Changes the bot image",
-        "JOKER": "JOKER 🃏: Changes the bot image",
-        "DODGE_MD": "DODGE 🏎️: Changes the bot image",
-        "KOE": "KŌE 🌸: Changes the bot image",
-        "BUNNY_MD": "BUNNY 🐰: Changes the bot image",
-        "LUCIFER": "LUCIFER 🦇: Changes the bot image",
-        "ANGELS": "ANGELS 👼: Changes the bot image",
-        "ASTRA_X": "ASTRA 💫: Changes the bot image"
+        "LUPIN_MD": "🕵️ The face of our operation is best managed securely from the shadows of the dashboard.",
+        "SWIFTBOT": "⚡ Visual override denied in chat. Utilize the web interface.",
+        "BULL_MD": "🐂 Visuals must be forged in the main dashboard panel.",
+        "JOKER": "😂 I'm camera shy here! Go use the dashboard for my new profile pic!",
+        "DODGE_MD": "🏎️ Paint job requires a pit stop at the web dashboard.",
+        "KOE": "🌸 Please use the beautiful dashboard to change my face gently.",
+        "BUNNY_MD": "🐰 Hop over to the dashboard to give me a new look!",
+        "LUCIFER": "🌑 My dark visage can only be altered from the web realm.",
+        "ANGELS": "👼 Please visit the heavenly dashboard to update my portrait.",
+        "ASTRA_X": "✨ For an elegant visual update, please utilize the web control panel."
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;
         try {
             
-    await sock.sendMessage(chatId, { text: "✅ Image update feature is managed via Dashboard/Web for safety." });
+    await sock.sendMessage(chatId, { text: (options.response || "") + "\n\n✅ Image update feature is managed via Dashboard/Web for safety." });
 
         } catch (e) {
             console.error(`[${"setimage"}] Error:`, e.message);

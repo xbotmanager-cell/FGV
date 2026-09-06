@@ -16,16 +16,16 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Unblock a specific command",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Unblock a specific command",
-        "BULL_MD": "BULL 🐂: Unblock a specific command",
-        "JOKER": "JOKER 🃏: Unblock a specific command",
-        "DODGE_MD": "DODGE 🏎️: Unblock a specific command",
-        "KOE": "KŌE 🌸: Unblock a specific command",
-        "BUNNY_MD": "BUNNY 🐰: Unblock a specific command",
-        "LUCIFER": "LUCIFER 🦇: Unblock a specific command",
-        "ANGELS": "ANGELS 👼: Unblock a specific command",
-        "ASTRA_X": "ASTRA 💫: Unblock a specific command"
+        "LUPIN_MD": "🕵️ The tool is back in the arsenal. Command unlocked.",
+        "SWIFTBOT": "⚡ Execution restored. Command block lifted.",
+        "BULL_MD": "🐂 The gates are open again. Command unblocked.",
+        "JOKER": "😂 Here is your toy back! Command restored!",
+        "DODGE_MD": "🏎️ Removing the brakes! Command unlocked.",
+        "KOE": "🌸 I am free to speak that word once more...",
+        "BUNNY_MD": "🐰 Bringing the carrot back out! Command enabled!",
+        "LUCIFER": "🌑 The dark seal is broken. Command permitted.",
+        "ANGELS": "👼 The restriction has been gracefully lifted.",
+        "ASTRA_X": "✨ Elegant restoration complete. Command is now active."
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;
@@ -35,7 +35,7 @@ export default {
     const target = commandManager.findCommand(args[0], currentPrefix);
     if (!target) { await sock.sendMessage(chatId, { text: "❌ Command not found." }); return; }
     await db.collection('commands').doc(target.config.id).update({ status: 'enabled' });
-    await sock.sendMessage(chatId, { text: `✅ Command '${args[0]}' is now enabled.` });
+    await sock.sendMessage(chatId, { text: (options.response ? options.response + "\n\n" : "") + `✅ Command '${args[0]}' is now enabled.` });
 
         } catch (e) {
             console.error(`[${"unblockcmd"}] Error:`, e.message);

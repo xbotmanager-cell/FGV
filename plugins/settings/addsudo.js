@@ -16,16 +16,16 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Add a sudo user",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Add a sudo user",
-        "BULL_MD": "BULL 🐂: Add a sudo user",
-        "JOKER": "JOKER 🃏: Add a sudo user",
-        "DODGE_MD": "DODGE 🏎️: Add a sudo user",
-        "KOE": "KŌE 🌸: Add a sudo user",
-        "BUNNY_MD": "BUNNY 🐰: Add a sudo user",
-        "LUCIFER": "LUCIFER 🦇: Add a sudo user",
-        "ANGELS": "ANGELS 👼: Add a sudo user",
-        "ASTRA_X": "ASTRA 💫: Add a sudo user"
+        "LUPIN_MD": "🕵️ A new operative has been granted executive access.",
+        "SWIFTBOT": "⚡ Privilege escalation absolute. Sudo access granted.",
+        "BULL_MD": "🐂 A new commander joins the ranks. Sudo enforced.",
+        "JOKER": "😂 Look who just got the VIP pass! Sudo added.",
+        "DODGE_MD": "🏎️ Handing over the spare keys. Sudo access engaged.",
+        "KOE": "🌸 I will now listen deeply to this new person...",
+        "BUNNY_MD": "🐰 A new friend with special powers! Sudo added!",
+        "LUCIFER": "🌑 The dark pact expands. Sudo rights granted.",
+        "ANGELS": "👼 A new guardian has been peacefully appointed.",
+        "ASTRA_X": "✨ Elegant executive privileges have been flawlessly granted."
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;
@@ -34,7 +34,7 @@ export default {
     if (!args[0]) { await sock.sendMessage(chatId, { text: "❌ Provide a number to add." }); return; }
     const num = args[0].replace(/[^0-9]/g, '');
     await db.collection('SudoUsers').doc(num).set({ addedAt: new Date().toISOString() });
-    await sock.sendMessage(chatId, { text: `✅ Added ${num} to sudo users.` });
+    await sock.sendMessage(chatId, { text: (options.response ? options.response + "\n\n" : "") + `✅ Added ${num} to sudo users.` });
 
         } catch (e) {
             console.error(`[${"addsudo"}] Error:`, e.message);

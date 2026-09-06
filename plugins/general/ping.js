@@ -16,16 +16,16 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Network penetration complete. Latency: {ms}ms.",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Boom! {ms}ms. Fast as always.",
-        "BULL_MD": "BULL 🐂: Authorized. Connection stable at {ms}ms.",
-        "JOKER": "JOKER 🃏: Hahaha! Ping Pong! Took me {ms}ms!",
-        "DODGE_MD": "DODGE 🏎️: Vroom! Engine revved in {ms}ms.",
-        "KOE": "KŌE 🌸: Hello... I reached you in {ms}ms.",
-        "BUNNY_MD": "BUNNY 🐰: Hop hop! Bounced back in {ms}ms!",
-        "LUCIFER": "LUCIFER 🦇: I have answered... {ms}ms.",
-        "ANGELS": "ANGELS 👼: Greetings! Connection healthy at {ms}ms.",
-        "ASTRA_X": "ASTRA 💫: Diagnostics complete. Response time {ms}ms."
+        "LUPIN_MD": "🕵️ I have silently penetrated the network. The vault's echo returned in {ms}ms.",
+        "SWIFTBOT": "⚡ Network scan absolute. Zero delays detected. Connection speed: {ms}ms.",
+        "BULL_MD": "🐂 Stand strong. The connection is unbreakable at {ms}ms.",
+        "JOKER": "😂 Ping Pong! I hit the ball and it bounced back in exactly {ms}ms!",
+        "DODGE_MD": "🏎️ Vroom! Engine revved to max RPM. Reached the server in {ms}ms!",
+        "KOE": "🌸 I felt the connection pulse... my heartbeat reached you in {ms}ms.",
+        "BUNNY_MD": "🐰 Hop hop! I bounced to the server and back in just {ms}ms!",
+        "LUCIFER": "🌑 The shadows whisper the connection speed... {ms}ms.",
+        "ANGELS": "👼 Blessings! The connection is peaceful and healthy at {ms}ms.",
+        "ASTRA_X": "✨ System diagnostics complete. Network latency is a beautiful {ms}ms."
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;

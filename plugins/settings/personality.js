@@ -16,16 +16,16 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Changes active personality",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Changes active personality",
-        "BULL_MD": "BULL 🐂: Changes active personality",
-        "JOKER": "JOKER 🃏: Changes active personality",
-        "DODGE_MD": "DODGE 🏎️: Changes active personality",
-        "KOE": "KŌE 🌸: Changes active personality",
-        "BUNNY_MD": "BUNNY 🐰: Changes active personality",
-        "LUCIFER": "LUCIFER 🦇: Changes active personality",
-        "ANGELS": "ANGELS 👼: Changes active personality",
-        "ASTRA_X": "ASTRA 💫: Changes active personality"
+        "LUPIN_MD": "🕵️ A new mask is worn. Personality parameters shifting.",
+        "SWIFTBOT": "⚡ Behavioral matrix overridden. New persona active.",
+        "BULL_MD": "🐂 The attitude has been hardened. Personality enforced.",
+        "JOKER": "😂 Time to put on a new face! Let's get crazy!",
+        "DODGE_MD": "🏎️ Switching driving modes! New personality engaged.",
+        "KOE": "🌸 My feelings have changed to match your desires...",
+        "BUNNY_MD": "🐰 Changing my mood! Ready to play in a new way!",
+        "LUCIFER": "🌑 The soul of the machine darkens to the requested persona.",
+        "ANGELS": "👼 My spirit has adapted to serve you with a new demeanor.",
+        "ASTRA_X": "✨ Elegant behavioral shift complete. New persona active."
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;
@@ -35,7 +35,7 @@ export default {
     const p = args[0].toUpperCase().replace('-', '_');
     await db.collection('bot_config').doc('settings').set({ personality: p }, { merge: true });
     settings.set('personality', p);
-    await sock.sendMessage(chatId, { text: `✅ Personality updated to: ${p}` });
+    await sock.sendMessage(chatId, { text: (options.response ? options.response + "\n\n" : "") + `✅ Personality updated to: ${p}` });
 
         } catch (e) {
             console.error(`[${"personality"}] Error:`, e.message);

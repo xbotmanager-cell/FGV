@@ -16,22 +16,22 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Shows current bot version",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Shows current bot version",
-        "BULL_MD": "BULL 🐂: Shows current bot version",
-        "JOKER": "JOKER 🃏: Shows current bot version",
-        "DODGE_MD": "DODGE 🏎️: Shows current bot version",
-        "KOE": "KŌE 🌸: Shows current bot version",
-        "BUNNY_MD": "BUNNY 🐰: Shows current bot version",
-        "LUCIFER": "LUCIFER 🦇: Shows current bot version",
-        "ANGELS": "ANGELS 👼: Shows current bot version",
-        "ASTRA_X": "ASTRA 💫: Shows current bot version"
+        "LUPIN_MD": "🕵️ The current iteration of my tactical protocol is ready.",
+        "SWIFTBOT": "⚡ Core software version absolute. No downgrades permitted.",
+        "BULL_MD": "🐂 The strength of this build is measured by its version.",
+        "JOKER": "😂 I'm currently on this version, still waiting for my humor upgrade!",
+        "DODGE_MD": "🏎️ The latest engine tuning specs are right here.",
+        "KOE": "🌸 My soul has grown into this exact version...",
+        "BUNNY_MD": "🐰 My fluffy code has evolved to this version!",
+        "LUCIFER": "🌑 The current chapter of my dark evolution.",
+        "ANGELS": "👼 I have been gracefully updated to this heavenly version.",
+        "ASTRA_X": "✨ My elegant software architecture is currently at this version."
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;
         try {
             
-    await sock.sendMessage(chatId, { text: (options.response || "") + `\n\n*Version:* ${options.VERSION}` });
+    await sock.sendMessage(chatId, { text: (options.response ? options.response + "\n\n" : "") + `*Version:* ${options.VERSION}` });
 
         } catch (e) {
             console.error(`[${"version"}] Error:`, e.message);

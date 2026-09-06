@@ -16,16 +16,16 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Changes the bot suffix",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Changes the bot suffix",
-        "BULL_MD": "BULL 🐂: Changes the bot suffix",
-        "JOKER": "JOKER 🃏: Changes the bot suffix",
-        "DODGE_MD": "DODGE 🏎️: Changes the bot suffix",
-        "KOE": "KŌE 🌸: Changes the bot suffix",
-        "BUNNY_MD": "BUNNY 🐰: Changes the bot suffix",
-        "LUCIFER": "LUCIFER 🦇: Changes the bot suffix",
-        "ANGELS": "ANGELS 👼: Changes the bot suffix",
-        "ASTRA_X": "ASTRA 💫: Changes the bot suffix"
+        "LUPIN_MD": "🕵️ The closing signature of our operations has been altered.",
+        "SWIFTBOT": "⚡ Trailing trigger overridden. Suffix modification absolute.",
+        "BULL_MD": "🐂 The final word is set. Suffix changed.",
+        "JOKER": "😂 Saving the best for last! Suffix updated.",
+        "DODGE_MD": "🏎️ Exhaust notes tuned. The new suffix is applied.",
+        "KOE": "🌸 The way our sentences end has changed... Suffix updated.",
+        "BUNNY_MD": "🐰 The tail end is now different! Suffix changed!",
+        "LUCIFER": "🌑 The closing shadow has shifted. Suffix altered.",
+        "ANGELS": "👼 The final graceful note has been updated.",
+        "ASTRA_X": "✨ The elegant command terminator has been seamlessly modified."
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;
@@ -34,7 +34,7 @@ export default {
     if (!args[0]) { await sock.sendMessage(chatId, { text: "❌ Please provide a new suffix." }); return; }
     await db.collection('bot_config').doc('command_settings').set({ suffix: args[0] }, { merge: true });
     settings.set('suffix', args[0]);
-    await sock.sendMessage(chatId, { text: `✅ Suffix updated to: ${args[0]}` });
+    await sock.sendMessage(chatId, { text: (options.response ? options.response + "\n\n" : "") + `✅ Suffix updated to: ${args[0]}` });
 
         } catch (e) {
             console.error(`[${"setsuffix"}] Error:`, e.message);

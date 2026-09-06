@@ -16,16 +16,16 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Toggle box message styling",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Toggle box message styling",
-        "BULL_MD": "BULL 🐂: Toggle box message styling",
-        "JOKER": "JOKER 🃏: Toggle box message styling",
-        "DODGE_MD": "DODGE 🏎️: Toggle box message styling",
-        "KOE": "KŌE 🌸: Toggle box message styling",
-        "BUNNY_MD": "BUNNY 🐰: Toggle box message styling",
-        "LUCIFER": "LUCIFER 🦇: Toggle box message styling",
-        "ANGELS": "ANGELS 👼: Toggle box message styling",
-        "ASTRA_X": "ASTRA 💫: Toggle box message styling"
+        "LUPIN_MD": "🕵️ The structural disguise of our messages has been toggled.",
+        "SWIFTBOT": "⚡ Container formatting overridden. Box mode absolute.",
+        "BULL_MD": "🐂 The rigid structure is set. Box mode enforced.",
+        "JOKER": "😂 Thinking inside or outside the box? Mode toggled!",
+        "DODGE_MD": "🏎️ Chassis framing adjusted. Box mode engaged.",
+        "KOE": "🌸 I will shape my words as you requested...",
+        "BUNNY_MD": "🐰 Putting things neatly in a box! (Or taking them out!)",
+        "LUCIFER": "🌑 The dark borders of my words have been altered.",
+        "ANGELS": "👼 The beautiful framing of my messages is now updated.",
+        "ASTRA_X": "✨ The elegant structural presentation has been modified."
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;
@@ -35,7 +35,7 @@ export default {
     const val = args[0] === 'on';
     await db.collection('bot_config').doc('settings').set({ boxmode: val }, { merge: true });
     settings.set('boxmode', val);
-    await sock.sendMessage(chatId, { text: `✅ Boxmode ${val ? 'Enabled' : 'Disabled'}` });
+    await sock.sendMessage(chatId, { text: (options.response ? options.response + "\n\n" : "") + `✅ Boxmode ${val ? 'Enabled' : 'Disabled'}` });
 
         } catch (e) {
             console.error(`[${"boxmode"}] Error:`, e.message);

@@ -16,16 +16,16 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Tactical manifest retrieved.\\n\\n{menu}",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Here's the gear list. Pick one.\\n\\n{menu}",
-        "BULL_MD": "BULL 🐂: Authorized command list.\\n\\n{menu}",
-        "JOKER": "JOKER 🃏: Pick a card, any card!\\n\\n{menu}",
-        "DODGE_MD": "DODGE 🏎️: Dashboard loaded.\\n\\n{menu}",
-        "KOE": "KŌE 🌸: I have gathered all my abilities for you...\\n\\n{menu}",
-        "BUNNY_MD": "BUNNY 🐰: Look at all these fun things we can do!\\n\\n{menu}",
-        "LUCIFER": "LUCIFER 🦇: The contract is open.\\n\\n{menu}",
-        "ANGELS": "ANGELS 👼: Here is how I can help you today.\\n\\n{menu}",
-        "ASTRA_X": "ASTRA 💫: System interface initialized.\\n\\n{menu}"
+        "LUPIN_MD": "🕵️ Tactical manifest retrieved. Here are the tools for our next operation.\\n\\n{menu}",
+        "SWIFTBOT": "⚡ Gear list loaded. Select your command directly.\\n\\n{menu}",
+        "BULL_MD": "🐂 The arsenal is open. Choose your weapon.\\n\\n{menu}",
+        "JOKER": "😂 Pick a card, any card! Welcome to the circus of commands!\\n\\n{menu}",
+        "DODGE_MD": "🏎️ Dashboard illuminated. All gears ready to shift.\\n\\n{menu}",
+        "KOE": "🌸 I have carefully gathered all my abilities for you to see...\\n\\n{menu}",
+        "BUNNY_MD": "🐰 Look at all these fun carrots we can pull out! Here is the menu!\\n\\n{menu}",
+        "LUCIFER": "🌑 The dark contract is open. Read the forbidden commands.\\n\\n{menu}",
+        "ANGELS": "👼 Here is the divine scroll of how I can assist you today.\\n\\n{menu}",
+        "ASTRA_X": "✨ Interface initialized. I have prepared an elegant list of capabilities.\\n\\n{menu}"
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;

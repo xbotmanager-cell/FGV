@@ -16,16 +16,16 @@ export default {
         features: ["Fully dynamic and customizable"]
     },
     responses: {
-        "LUPIN_MD": "LUPIN ⚡: Remove a sudo user",
-        "SWIFTBOT": "SWIFTBOT 🏎️: Remove a sudo user",
-        "BULL_MD": "BULL 🐂: Remove a sudo user",
-        "JOKER": "JOKER 🃏: Remove a sudo user",
-        "DODGE_MD": "DODGE 🏎️: Remove a sudo user",
-        "KOE": "KŌE 🌸: Remove a sudo user",
-        "BUNNY_MD": "BUNNY 🐰: Remove a sudo user",
-        "LUCIFER": "LUCIFER 🦇: Remove a sudo user",
-        "ANGELS": "ANGELS 👼: Remove a sudo user",
-        "ASTRA_X": "ASTRA 💫: Remove a sudo user"
+        "LUPIN_MD": "🕵️ Executive access revoked. The operative is out.",
+        "SWIFTBOT": "⚡ Privilege demotion absolute. Sudo access removed.",
+        "BULL_MD": "🐂 The commander has been stripped of rank. Sudo removed.",
+        "JOKER": "😂 VIP pass expired! Back to the normal line! Sudo removed.",
+        "DODGE_MD": "🏎️ Taking back the spare keys. Sudo access revoked.",
+        "KOE": "🌸 I must say goodbye to their special whispers...",
+        "BUNNY_MD": "🐰 Taking away the magic wand! Sudo removed.",
+        "LUCIFER": "🌑 The dark pact is severed. Sudo rights revoked.",
+        "ANGELS": "👼 The guardian duties have been peacefully relieved.",
+        "ASTRA_X": "✨ Elegant executive privileges have been flawlessly revoked."
 },
     execute: async (sock, msg, args, currentPrefix, options) => {
         const chatId = msg.key.remoteJid;
@@ -34,7 +34,7 @@ export default {
     if (!args[0]) { await sock.sendMessage(chatId, { text: "❌ Provide a number to remove." }); return; }
     const num = args[0].replace(/[^0-9]/g, '');
     await db.collection('SudoUsers').doc(num).delete();
-    await sock.sendMessage(chatId, { text: `✅ Removed ${num} from sudo users.` });
+    await sock.sendMessage(chatId, { text: (options.response ? options.response + "\n\n" : "") + `✅ Removed ${num} from sudo users.` });
 
         } catch (e) {
             console.error(`[${"delsudo"}] Error:`, e.message);
