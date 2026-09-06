@@ -1,0 +1,8 @@
+{
+  "name": "Zxc",
+  "description": "An automated bot for managing and responding to messages on WhatsApp via the official API.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

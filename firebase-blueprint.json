@@ -1,0 +1,633 @@
+{
+  "entities": {
+    "Update": {
+      "title": "Update",
+      "description": "User Bot Update System & Global Admin Update System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "updateType": { "type": "string", "enum": ["user", "global"] },
+        "changes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["pending", "applied", "failed"] }
+      },
+      "required": ["botId", "updateType", "createdAt"]
+    },
+    "UpdateLog": {
+      "title": "UpdateLog",
+      "description": "Logs for updates",
+      "type": "object",
+      "properties": {
+        "updateId": { "type": "string" },
+        "log": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["updateId", "createdAt"]
+    },
+    "Lock": {
+      "title": "Lock",
+      "description": "Global Command and Feature Lock System",
+      "type": "object",
+      "properties": {
+        "itemType": { "type": "string", "enum": ["command", "plugin", "feature", "function", "module"] },
+        "itemName": { "type": "string" },
+        "reason": { "type": "string" },
+        "adminId": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "lockType": { "type": "string", "enum": ["global", "selected_bot", "temporary", "permanent"] },
+        "targetBotId": { "type": "string" }
+      },
+      "required": ["itemType", "itemName", "adminId", "date", "status", "lockType"]
+    },
+    "SudoUser": {
+      "title": "SudoUser",
+      "description": "Advanced Sudo Permission System",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "addedBy": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "banned"] },
+        "expirationDate": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "addedBy", "status", "createdAt"]
+    },
+    "Permission": {
+      "title": "Permission",
+      "description": "Permissions for Sudo Users",
+      "type": "object",
+      "properties": {
+        "sudoUserId": { "type": "string" },
+        "accessLevel": { "type": "string" },
+        "commands": { "type": "array", "items": { "type": "string" } },
+        "features": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["sudoUserId", "createdAt"]
+    },
+    "Export": {
+      "title": "Export",
+      "description": "Settings Export and Import System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "exportData": { "type": "string" },
+        "version": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "exportData", "createdAt"]
+    },
+    "Import": {
+      "title": "Import",
+      "description": "Settings Export and Import System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "importData": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "success", "failed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "importData", "createdAt"]
+    },
+    "SyncRequest": {
+      "title": "SyncRequest",
+      "description": "Bot Settings Synchronization System",
+      "type": "object",
+      "properties": {
+        "sourceBotId": { "type": "string" },
+        "targetBotId": { "type": "string" },
+        "dataToSync": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["sourceBotId", "targetBotId", "status", "createdAt"]
+    },
+    "Configuration": {
+      "title": "Configuration",
+      "description": "Bot Configuration",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "configData": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "createdAt"]
+    },
+    "Bot": {
+      "title": "Bot",
+      "description": "Bot Details",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "botName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "botName", "createdAt"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User Details",
+      "type": "object",
+      "properties": {
+        "phoneNumber": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["phoneNumber", "createdAt"]
+    },
+    "Trigger": {
+      "title": "Trigger",
+      "description": "Automatic Trigger Function System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "eventType": { "type": "string" },
+        "conditions": { "type": "string" },
+        "actionType": { "type": "string" },
+        "actionPayload": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "eventType", "actionType", "status"]
+    },
+    "GameProfile": {
+      "title": "GameProfile",
+      "description": "Automatic Game System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "gameType": { "type": "string" },
+        "config": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive"] }
+      },
+      "required": ["botId", "gameType", "status"]
+    },
+    "Leaderboard": {
+      "title": "Leaderboard",
+      "description": "Leaderboard System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "userId": { "type": "string" },
+        "score": { "type": "number" },
+        "wins": { "type": "number" },
+        "activity": { "type": "number" },
+        "points": { "type": "number" },
+        "period": { "type": "string", "enum": ["daily", "weekly", "monthly", "all_time"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "userId", "period"]
+    },
+    "Giveaway": {
+      "title": "Giveaway",
+      "description": "Giveaway System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "title": { "type": "string" },
+        "reward": { "type": "string" },
+        "participants": { "type": "array", "items": { "type": "string" } },
+        "winner": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "completed"] },
+        "endDate": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "title", "reward", "status"]
+    },
+    "ImageTemplate": {
+      "title": "ImageTemplate",
+      "description": "Image Response Mode System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "config": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive"] }
+      },
+      "required": ["botId", "name", "type", "status"]
+    },
+    "CommandProfile": {
+      "title": "CommandProfile",
+      "description": "Advanced Command Information System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "name": { "type": "string" },
+        "aliases": { "type": "array", "items": { "type": "string" } },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "examples": { "type": "array", "items": { "type": "string" } },
+        "permissionLevel": { "type": "string" },
+        "plugin": { "type": "string" },
+        "reactionEmoji": { "type": "string" }
+      },
+      "required": ["botId", "name", "category"]
+    },
+    "CommandHelp": {
+      "title": "CommandHelp",
+      "description": "Help System for Commands",
+      "type": "object",
+      "properties": {
+        "commandId": { "type": "string" },
+        "explanation": { "type": "string" },
+        "instructions": { "type": "string" },
+        "features": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["commandId"]
+    },
+    "PersonalityResponse": {
+      "title": "PersonalityResponse",
+      "description": "Personality Response System",
+      "type": "object",
+      "properties": {
+        "commandId": { "type": "string" },
+        "personality": { "type": "string" },
+        "responseText": { "type": "string" }
+      },
+      "required": ["commandId", "personality", "responseText"]
+    },
+    "MenuConfig": {
+      "title": "MenuConfig",
+      "description": "Advanced Dynamic Menu System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "style": { "type": "string", "enum": ["box", "boxless"] },
+        "header": { "type": "string" },
+        "footer": { "type": "string" },
+        "displayOption": { "type": "string", "enum": ["commands", "aliases", "both"] },
+        "paginationLimit": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "inactive"] }
+      },
+      "required": ["botId", "style", "displayOption", "status"]
+    },
+    "BotDeployment": {
+      "title": "BotDeployment",
+      "description": "Permanent Centralized Deployment Connection System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "whatsappNumber": { "type": "string" },
+        "sessionStatus": { "type": "string", "enum": ["connected", "disconnected", "pending"] },
+        "config": { "type": "string" },
+        "version": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "ownerId", "sessionStatus"]
+    },
+    "Language": {
+      "title": "Language",
+      "description": "Universal Multi-Language Engine - Global Settings",
+      "type": "object",
+      "properties": {
+        "defaultLanguage": { "type": "string" },
+        "supportedLanguages": { "type": "array", "items": { "type": "string" } },
+        "forceTranslationMode": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["defaultLanguage", "supportedLanguages"]
+    },
+    "BotLanguageSetting": {
+      "title": "BotLanguageSetting",
+      "description": "Universal Multi-Language Engine - Bot Specific Settings",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "language": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "language"]
+    },
+    "TranslationCache": {
+      "title": "TranslationCache",
+      "description": "Translation Cache",
+      "type": "object",
+      "properties": {
+        "textHash": { "type": "string" },
+        "originalText": { "type": "string" },
+        "targetLang": { "type": "string" },
+        "translatedText": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["textHash", "targetLang", "translatedText"]
+    },
+    "APIProvider": {
+      "title": "APIProvider",
+      "description": "Smart API Key Provider",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "service": { "type": "string" },
+        "apiKey": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "backup", "emergency", "disabled"] },
+        "priority": { "type": "number" },
+        "failureCount": { "type": "number" },
+        "usageLimits": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "service", "apiKey", "status", "priority"]
+    },
+    "FallbackRule": {
+      "title": "FallbackRule",
+      "description": "Smart API Fallback Rules",
+      "type": "object",
+      "properties": {
+        "service": { "type": "string" },
+        "primaryProviderId": { "type": "string" },
+        "backupProviderId": { "type": "string" },
+        "emergencyProviderId": { "type": "string" }
+      },
+      "required": ["service"]
+    },
+    "APIUsageLog": {
+      "title": "APIUsageLog",
+      "description": "Smart API Usage Logs",
+      "type": "object",
+      "properties": {
+        "providerId": { "type": "string" },
+        "service": { "type": "string" },
+        "success": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["providerId", "service", "success"]
+    },
+    "Channel": {
+      "title": "Channel",
+      "description": "Channel Automation Config",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "channelId": { "type": "string" },
+        "autoJoin": { "type": "boolean" },
+        "autoFollow": { "type": "boolean" },
+        "autoReact": { "type": "boolean" },
+        "autoAnnounce": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "channelId"]
+    },
+    "Group": {
+      "title": "Group",
+      "description": "Group Automation Config",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "groupId": { "type": "string" },
+        "welcomeMessage": { "type": "string" },
+        "rules": { "type": "string" },
+        "autoModeration": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "groupId"]
+    },
+    "CommandUsageLog": {
+      "title": "CommandUsageLog",
+      "description": "Command Usage History and Spam prevention",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "userId": { "type": "string" },
+        "command": { "type": "string" },
+        "isBlocked": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "userId", "command", "createdAt"]
+    },
+    "CooldownRule": {
+      "title": "CooldownRule",
+      "description": "Rate Limiting and Cooldown Rules",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "command": { "type": "string" },
+        "limit": { "type": "number" },
+        "timeframeSeconds": { "type": "number" }
+      },
+      "required": ["botId", "command", "limit", "timeframeSeconds"]
+    },
+    "SecurityRule": {
+      "title": "SecurityRule",
+      "description": "Automatic Group Security System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "groupId": { "type": "string" },
+        "antiLink": { "type": "boolean" },
+        "antiSpam": { "type": "boolean" },
+        "antiFlood": { "type": "boolean" },
+        "antiBadWords": { "type": "boolean" },
+        "antiFakeAccounts": { "type": "boolean" },
+        "antiMalicious": { "type": "boolean" },
+        "action": { "type": "string", "enum": ["warn", "delete", "mute", "remove"] },
+        "warningLimit": { "type": "number" }
+      },
+      "required": ["botId", "groupId"]
+    },
+    "CustomBot": {
+      "title": "CustomBot",
+      "description": "Custom Bot Builder Profile",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "userId": { "type": "string" },
+        "botName": { "type": "string" },
+        "prefix": { "type": "string" },
+        "suffix": { "type": "string" },
+        "personality": { "type": "string" },
+        "menuStyle": { "type": "string" },
+        "commands": { "type": "array", "items": { "type": "string" } },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "userId", "botName"]
+    },
+    "BotExport": {
+      "title": "BotExport",
+      "description": "Bot Export System Job",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "userId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
+        "downloadUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "userId", "status"]
+    },
+    "GitRepository": {
+      "title": "GitRepository",
+      "description": "GitHub Repository Deployment System",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "repoUrl": { "type": "string" },
+        "forkLink": { "type": "string" },
+        "status": { "type": "string", "enum": ["created", "pushed", "failed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "repoUrl", "status"]
+    },
+    "AIAgent": {
+      "title": "AIAgent",
+      "description": "Groq AI Custom Bot Creation Agent",
+      "type": "object",
+      "properties": {
+        "botId": { "type": "string" },
+        "agentModel": { "type": "string" },
+        "prompt": { "type": "string" },
+        "generatedConfig": { "type": "string" },
+        "status": { "type": "string", "enum": ["processing", "completed", "failed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["botId", "agentModel", "prompt", "status"]
+    }
+  },
+  "firestore": {
+    "Updates": {
+      "schema": { "$ref": "#/entities/Update" },
+      "description": "Stores bot updates"
+    },
+    "UpdateLogs": {
+      "schema": { "$ref": "#/entities/UpdateLog" },
+      "description": "Stores logs for updates"
+    },
+    "Locks": {
+      "schema": { "$ref": "#/entities/Lock" },
+      "description": "Stores locks for commands and features"
+    },
+    "SudoUsers": {
+      "schema": { "$ref": "#/entities/SudoUser" },
+      "description": "Stores sudo users"
+    },
+    "Permissions": {
+      "schema": { "$ref": "#/entities/Permission" },
+      "description": "Stores permissions"
+    },
+    "Exports": {
+      "schema": { "$ref": "#/entities/Export" },
+      "description": "Stores exports"
+    },
+    "Imports": {
+      "schema": { "$ref": "#/entities/Import" },
+      "description": "Stores imports"
+    },
+    "SyncRequests": {
+      "schema": { "$ref": "#/entities/SyncRequest" },
+      "description": "Stores sync requests"
+    },
+    "Configurations": {
+      "schema": { "$ref": "#/entities/Configuration" },
+      "description": "Stores bot configurations"
+    },
+    "Bots": {
+      "schema": { "$ref": "#/entities/Bot" },
+      "description": "Stores bots"
+    },
+    "Users": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Stores users"
+    },
+    "Triggers": {
+      "schema": { "$ref": "#/entities/Trigger" },
+      "description": "Stores automatic triggers"
+    },
+    "Games": {
+      "schema": { "$ref": "#/entities/GameProfile" },
+      "description": "Stores game configurations"
+    },
+    "Leaderboards": {
+      "schema": { "$ref": "#/entities/Leaderboard" },
+      "description": "Stores leaderboards"
+    },
+    "Giveaways": {
+      "schema": { "$ref": "#/entities/Giveaway" },
+      "description": "Stores giveaways"
+    },
+    "ImageTemplates": {
+      "schema": { "$ref": "#/entities/ImageTemplate" },
+      "description": "Stores image response templates"
+    },
+    "Commands": {
+      "schema": { "$ref": "#/entities/CommandProfile" },
+      "description": "Stores command profiles"
+    },
+    "CommandHelp": {
+      "schema": { "$ref": "#/entities/CommandHelp" },
+      "description": "Stores command help info"
+    },
+    "Personalities": {
+      "schema": { "$ref": "#/entities/PersonalityResponse" },
+      "description": "Stores personality responses"
+    },
+    "Menus": {
+      "schema": { "$ref": "#/entities/MenuConfig" },
+      "description": "Stores menu configurations"
+    },
+    "BotDeployments": {
+      "schema": { "$ref": "#/entities/BotDeployment" },
+      "description": "Stores centralized bot deployments"
+    },
+    "Languages": {
+      "schema": { "$ref": "#/entities/Language" },
+      "description": "Stores global language settings"
+    },
+    "BotLanguageSettings": {
+      "schema": { "$ref": "#/entities/BotLanguageSetting" },
+      "description": "Stores bot-specific language settings"
+    },
+    "TranslationCache": {
+      "schema": { "$ref": "#/entities/TranslationCache" },
+      "description": "Stores cached translations"
+    },
+    "APIProviders": {
+      "schema": { "$ref": "#/entities/APIProvider" },
+      "description": "Stores API providers and keys"
+    },
+    "FallbackRules": {
+      "schema": { "$ref": "#/entities/FallbackRule" },
+      "description": "Stores smart API fallback rules"
+    },
+    "APIUsageLogs": {
+      "schema": { "$ref": "#/entities/APIUsageLog" },
+      "description": "Stores usage and failure logs"
+    },
+    "Channels": {
+      "schema": { "$ref": "#/entities/Channel" },
+      "description": "Stores channel automation settings"
+    },
+    "Groups": {
+      "schema": { "$ref": "#/entities/Group" },
+      "description": "Stores group automation settings"
+    },
+    "CommandUsageLogs": {
+      "schema": { "$ref": "#/entities/CommandUsageLog" },
+      "description": "Stores command usage and spam prevention logs"
+    },
+    "CooldownRules": {
+      "schema": { "$ref": "#/entities/CooldownRule" },
+      "description": "Stores rate limiting and cooldown rules"
+    },
+    "SecurityRules": {
+      "schema": { "$ref": "#/entities/SecurityRule" },
+      "description": "Stores group security rules"
+    },
+    "CustomBots": {
+      "schema": { "$ref": "#/entities/CustomBot" },
+      "description": "Stores custom bot builder profiles"
+    },
+    "BotExports": {
+      "schema": { "$ref": "#/entities/BotExport" },
+      "description": "Stores bot export jobs"
+    },
+    "GitRepositories": {
+      "schema": { "$ref": "#/entities/GitRepository" },
+      "description": "Stores GitHub deployments"
+    },
+    "AIAgents": {
+      "schema": { "$ref": "#/entities/AIAgent" },
+      "description": "Stores AI bot generation jobs"
+    }
+  }
+}

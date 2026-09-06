@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0070f3;
+  --color-primary-dark: #3291ff;
+  --color-accents-1: #111;
+  --color-accents-2: #333;
+  --color-accents-3: #444;
+  --color-accents-4: #666;
+  --color-accents-5: #888;
+  --color-accents-6: #999;
+  --color-accents-7: #eaeaea;
+  --color-accents-8: #fafafa;
+}
+
+@layer base {
+  body {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer utilities {
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
